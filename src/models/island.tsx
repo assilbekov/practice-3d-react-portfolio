@@ -12,10 +12,10 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { a } from "@react-spring/three"
 import islandScene from "../assets/3d/island.glb"
 
-export function Island({isRotating, setIsRotating, ...props}: any) {
+export function Island({ isRotating, setIsRotating, ...props }: any) {
   const islandRef = useRef()
 
-  const {gl, viewport} = useThree()
+  const { gl, viewport } = useThree()
   const { nodes, materials } = useGLTF(islandScene)
 
   const lastX = useRef(0)
@@ -51,15 +51,35 @@ export function Island({isRotating, setIsRotating, ...props}: any) {
     if (isRotating) handlePointerUp(e)
   }
 
+  const handleKeyDown = (e: any) => {
+    if (e.key === "ArrowLeft") {
+      if (!isRotating) setIsRotating(true)
+      islandRef.current.rotation.y += 0.01 * Math.PI
+    } else if (e.key === "ArrowRight") {
+      if (!isRotating) setIsRotating(true)
+      islandRef.current.rotation.y -= 0.01 * Math.PI
+    }
+  }
+
+  const handleKeyUp = (e: any) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      setIsRotating(false)
+    }
+  }
+
   useEffect(() => {
     window.addEventListener("pointerdown", handlePointerDown)
     window.addEventListener("pointerup", handlePointerUp)
     window.addEventListener("pointermove", handlePointerMove)
+    window.addEventListener("keydown", handleKeyDown)
+    window.addEventListener("keyup", handleKeyUp)
 
     return () => {
       window.removeEventListener("pointerdown", handlePointerDown)
       window.removeEventListener("pointerup", handlePointerUp)
       window.removeEventListener("pointermove", handlePointerMove)
+      window.removeEventListener("keydown", handleKeyDown)
+      window.removeEventListener("keyup", handleKeyUp)
     }
   }, [gl, handlePointerDown, handlePointerUp, handlePointerMove])
 
