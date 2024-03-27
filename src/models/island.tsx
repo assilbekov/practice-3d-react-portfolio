@@ -6,15 +6,62 @@ Source: https://sketchfab.com/3d-models/foxs-islands-163b68e09fcc47618450150be77
 Title: Fox's islands
 */
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { a } from "@react-spring/three"
 import islandScene from "../assets/3d/island.glb"
 
-export function Island(props: any) {
+export function Island({isRotating, setIsRotating, ...props}: any) {
   const islandRef = useRef()
+
+  const {gl, viewport} = useThree()
   const { nodes, materials } = useGLTF(islandScene)
+
+  const lastX = useRef(0)
+  const rotationSpeed = useRef(0)
+  const dampingFactor = 0.95;
+
+  const handlePointerDown = (e: any) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setIsRotating(true)
+
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    lastX.current = clientX
+  }
+
+  const handlePointerUp = (e: any) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setIsRotating(false)
+
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    const delta = (clientX - lastX.current) / viewport.width
+
+    islandRef.current.rotation.y += delta * 0.01 * Math.PI
+    lastX = clientX
+    rotationSpeed.current = delta * 0.01 * Math.PI
+  }
+
+  const handlePointerMove = (e: any) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    if (isRotating) handlePointerUp(e)
+  }
+
+  useEffect(() => {
+    window.addEventListener("pointerdown", handlePointerDown)
+    window.addEventListener("pointerup", handlePointerUp)
+    window.addEventListener("pointermove", handlePointerMove)
+
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown)
+      window.removeEventListener("pointerup", handlePointerUp)
+      window.removeEventListener("pointermove", handlePointerMove)
+    }
+  }, [gl, handlePointerDown, handlePointerUp, handlePointerMove])
 
   return (
     <a.group ref={islandRef} {...props} >
