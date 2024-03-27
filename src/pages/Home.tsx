@@ -1,10 +1,25 @@
-
+import { Canvas } from "@react-three/fiber";
+import { Suspense } from "react";
+import { Loader } from "../components/Loader";
 
 export const Home = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-5">
-      <h1 className="text-4xl font-bold">Home</h1>
-      <p className="text-lg">Welcome to my portfolio</p>
-    </div>
+    <section className="w-full h-full relative">
+      {/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
+        POPUP
+      </div> */}
+      <Canvas
+        className="w-full h-screen bg-transparent"
+        camera={{ near: 0.1, far: 1000 }}
+      >
+        <Suspense fallback={<Loader />}>
+          <directionalLight />
+          <ambientLight />
+          <pointLight />
+          <spotLight />
+          <hemisphereLight />
+        </Suspense>
+      </Canvas>
+    </section>
   )
 }
