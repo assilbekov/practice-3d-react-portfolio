@@ -1,6 +1,6 @@
 
 
-export const AboutPage = () => {
+export const About = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-5">
       <h1 className="text-4xl font-bold">About</h1>
