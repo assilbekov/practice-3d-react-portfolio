@@ -1,11 +1,12 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom"
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
+import { Navbar } from "./components/navbar"
 
 
 function App() {
   return (
     <main className="bg-slate-300/20">
       <Router>
-        Navbar
+        <Navbar />
         <Routes>
           <Route path="/" element={"Home"} />
           <Route path="/about" element={"About"} />
@@ -13,6 +14,7 @@ function App() {
           <Route path="/contact" element={"Contact"} />
         </Routes>
       </Router>
+      <div className="w-10 h-10 bg-red-50" />
     </main>
   )
 }
