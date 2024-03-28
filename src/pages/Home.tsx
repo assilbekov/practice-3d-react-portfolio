@@ -59,7 +59,7 @@ export const Home = () => {
             position={planePosition} scale={planeScale}
             rotation={[0, 20, 0]}
           />
-          <Sky />
+          <Sky isRotating={isRotating} />
           <Island
             position={islandPosition} scale={islandScale}
             rotation={islandRotation}
