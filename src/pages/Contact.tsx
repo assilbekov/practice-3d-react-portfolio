@@ -11,6 +11,10 @@ export const Contact = () => {
     })
   }
 
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {}
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {}
+
   return (
     <section className="flex relative flex-col lg:flex-row max-container">
       <div className="flex-1 min-w-[50%] flex flex-col">
@@ -25,6 +29,35 @@ export const Contact = () => {
               placeholder="John"
               value={form.name}
               onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            />
+          </label>
+          <label className="text-black-500 font-semibold">
+            Email
+            <input
+              type="email"
+              name="email"
+              className="input"
+              placeholder="john@gmail.com"
+              value={form.email}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            />
+          </label>
+          <label className="text-black-500 font-semibold">
+            Your message
+            <textarea
+              name="message"
+              className="textarea"
+              placeholder="Let me know how i can help you!"
+              value={form.message}
+              rows={4}
+              required
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
           </label>
         </form>
