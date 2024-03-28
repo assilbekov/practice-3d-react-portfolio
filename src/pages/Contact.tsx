@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-
+import emailjs from "@emailjs/browser";
 
 export const Contact = () => {
   const formRef = useRef();
@@ -21,17 +21,25 @@ export const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
-    fetch("https://api.example.com/contact", {
-      method: "POST",
-      body: JSON.stringify(form)
-    })
-      .then(() => {
-        setLoading(false);
-        setForm({ name: "", email: "", message: "" })
-      })
-      .catch(() => {
-        setLoading(false);
-      })
+    // This is fake. I'm not going to use the service sending emails.
+    emailjs.send(
+      import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+      {
+        from_name: form.name,
+        from_email: form.email,
+        to_name: "me",
+        to_email: "fake_email@fake.com",
+        message: form.message,
+      },
+      import.meta.env.VITE_APP_EMAILJS_USER_ID
+    )
+
+    // Fake call.
+    setTimeout(() => {
+      setLoading(false);
+      setForm({ name: "", email: "", message: "" })
+    }, 10000)
   }
 
   return (
